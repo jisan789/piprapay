@@ -46,11 +46,11 @@ This repository is a **Modernized UI/UX Edition** of the open-source **[PipraPay
 
 ## 🎨 UI/UX Transformation Showcase
 
-| Screen | Focus | Description |
+| Screen / Flow | Experience | Description |
 | :--- | :---: | :--- |
-| **💳 Modern Checkout** | `payments/` | Sleek dark-mode container with dynamic timer counters, instant account number copying, and step-by-step guidance. |
-| **✅ Success Screen** | `success.php` | High-clarity digital receipt displaying transaction ID, amount, payment channel badge, and animated redirection. |
-| **⚠️ Error Recovery** | `error.php` | Informative state screen detailing error reasons, retry mechanisms, and merchant support identifiers. |
+| **💳 Modern Checkout** | `Payment Selection` | Sleek dark-mode container with dynamic timer counters, instant account number copying, and step-by-step guidance. |
+| **✅ Success State UI** | `Payment Approved` | High-clarity digital receipt displaying transaction ID, amount, payment channel badge, and animated redirection. |
+| **⚠️ Error & Cancel State UI** | `Payment Failed` | Informative state screen detailing error reasons, retry mechanisms, and merchant support identifiers. |
 | **📚 Developer Portal** | `/docs/` | Interactive developer playground featuring cURL, PHP, JS snippets, copy-paste shortcuts, and payload inspectors. |
 
 ---
