@@ -152,8 +152,15 @@ chmod -R 777 pp-content/pp-upload pp-media/storage
 
 ### Android SMS Companion Setup
 
+<div align="center">
+
+[![Download Android Companion APK](https://img.shields.io/badge/Download_APK-Latest_Release-3DDC84?style=for-the-badge&logo=android&logoColor=white)](https://github.com/jisan789/piprapay/releases/latest)
+[![Release Notes](https://img.shields.io/badge/Releases-Changelog_&_Assets-blue?style=for-the-badge&logo=github&logoColor=white)](https://github.com/jisan789/piprapay/releases)
+
+</div>
+
 ```text
-[Step 1] Install PipraPay Companion APK on the device receiving transaction SMS.
+[Step 1] Download and install the PipraPay Companion APK from GitHub Releases.
 [Step 2] Navigate to Admin Panel -> Settings -> Companion App.
 [Step 3] Generate and copy the one-time authentication token.
 [Step 4] Authenticate the mobile companion app to initiate automated background sync.
