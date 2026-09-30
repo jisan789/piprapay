@@ -1,10 +1,6 @@
 # 🐜 PipraPay (Enhanced UI & Checkout Edition)
 
 <p align="center">
-  <img src="https://piprapay.com/assets/logo-light.png" alt="PipraPay Logo" width="180">
-</p>
-
-<p align="center">
   <img src="https://img.shields.io/badge/Edition-UI%20Updated%20Fork-6366f1?style=for-the-badge&logo=sparkles&logoColor=white" alt="UI Updated Edition">
   <img src="https://img.shields.io/badge/Security-Original%20PipraPay%20Core-emerald?style=for-the-badge&logo=shield" alt="Core Security Untouched">
   <img src="https://img.shields.io/badge/Payment-Automatic%20Verification-blue?style=for-the-badge&logo=check-circle" alt="Automatic Payment Verification">
