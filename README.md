@@ -6,10 +6,10 @@
 </p>
 
 <p align="center">
-  <a href="#-core-architecture"><img src="https://img.shields.io/badge/Architecture-Event--Driven-8b5cf6?style=for-the-badge&logo=fastapi&logoColor=white" alt="Architecture"></a>
-  <a href="#-security-and-integrity"><img src="https://img.shields.io/badge/Security-Original_Core_Verified-10b981?style=for-the-badge&logo=shield&logoColor=white" alt="Security Verified"></a>
-  <a href="#-automated-verification-workflow"><img src="https://img.shields.io/badge/Verification-Instant_Auto_SMS-06b6d4?style=for-the-badge&logo=googlechat&logoColor=white" alt="Verification"></a>
-  <a href="#-supported-gateways"><img src="https://img.shields.io/badge/Gateways-20+_Integrated-f59e0b?style=for-the-badge&logo=cashapp&logoColor=white" alt="Gateways"></a>
+  <a href="#-how-to-create-orders-checkout-api-guide"><img src="https://img.shields.io/badge/Checkout_API-Quick_Integration-8b5cf6?style=for-the-badge&logo=fastapi&logoColor=white" alt="Checkout API"></a>
+  <a href="#-security--verification-guarantee"><img src="https://img.shields.io/badge/Security-Original_Core_Verified-10b981?style=for-the-badge&logo=shield&logoColor=white" alt="Security Verified"></a>
+  <a href="#-uiux-transformation-showcase"><img src="https://img.shields.io/badge/UI_Edition-Modern_Glassmorphism-06b6d4?style=for-the-badge&logo=sparkles&logoColor=white" alt="UI Edition"></a>
+  <a href="#-supported-gateways--integrations"><img src="https://img.shields.io/badge/Gateways-20+_Integrated-f59e0b?style=for-the-badge&logo=cashapp&logoColor=white" alt="Gateways"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-AGPL--3.0-3b82f6.svg?style=for-the-badge&logo=gnu&logoColor=white" alt="AGPL-3.0 License"></a>
 </p>
 
@@ -41,28 +41,6 @@ This repository is a **Modernized UI/UX Edition** of the open-source **[PipraPay
 
 > [!IMPORTANT]
 > **Zero Security Alterations**: The underlying cryptographic hashing, signature validations, database transactions, and companion token protocols remain **100% unaltered** from upstream PipraPay. This update focuses entirely on front-end aesthetics, streamlined user flow, and developer experience.
-
----
-
-## 🏗️ System Architecture & Workflow
-
-PipraPay bridges non-API personal wallets, merchant gateways, and SMS alerts into a single programmable unified payment pipeline:
-
-```mermaid
-flowchart LR
-    A[Customer Checkout] -->|Select Gateway| B(PipraPay Modern UI)
-    B -->|Submit Txn / Pay| C{Payment Flow}
-    
-    C -->|MFS / Personal Number| D[Customer Sends Money]
-    D -->|Device Receives SMS| E[Android Companion App]
-    E -->|Encrypted Sync| F[PipraPay Verification Engine]
-    
-    C -->|Direct Gateway / API| G[PGW Provider API]
-    G -->|Callback| F
-    
-    F -->|Instant Match| H[Success Receipt & Auto-Redirect]
-    F -->|Instant Webhook / IPN| I[Merchant Web Application]
-```
 
 ---
 
