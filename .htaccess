@@ -1,0 +1,23 @@
+RewriteEngine On
+
+Options -Indexes
+
+# Protect sensitive files
+<FilesMatch "^(pp-config\.php|pp-temp-config\.php|\.env|\.git|db\.sql|\.lock)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Block direct access to PHP files other than index.php (works in both root and subdirectories)
+RewriteCond %{THE_REQUEST} \s/+(?:.+/)?([^/\s?]+?\.php)[\s?] [NC]
+RewriteCond %1 !^index\.php$ [NC]
+RewriteRule ^ - [F,L]
+
+# Allow existing files and directories (CSS, JS, images, media)
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Route all requests to index.php
+RewriteRule ^(.+)$ index.php?page=$1 [QSA,L]
+

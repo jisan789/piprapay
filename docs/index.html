@@ -1,0 +1,2204 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PipraPay REST API Documentation</title>
+  <meta name="description" content="Official developer documentation for PipraPay REST API - Orders, Checkout Redirection, Verification, and Refunds.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #06080e;
+      --bg-surface: #0b0f19;
+      --bg-elevated: #111726;
+      --bg-card: rgba(17, 24, 39, 0.7);
+      --bg-code: #070a13;
+      --bg-code-header: rgba(18, 24, 40, 0.85);
+
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(99, 102, 241, 0.3);
+      --border-focus: #6366f1;
+
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --primary-glow: rgba(99, 102, 241, 0.18);
+      
+      --accent-green: #10b981;
+      --accent-green-bg: rgba(16, 185, 129, 0.1);
+      --accent-green-border: rgba(16, 185, 129, 0.25);
+
+      --accent-amber: #f59e0b;
+      --accent-amber-bg: rgba(245, 158, 11, 0.1);
+      --accent-amber-border: rgba(245, 158, 11, 0.25);
+
+      --accent-red: #f43f5e;
+      --accent-red-bg: rgba(244, 63, 94, 0.1);
+      --accent-red-border: rgba(244, 63, 94, 0.25);
+
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --sidebar-w: 280px;
+      --toc-w: 230px;
+      --topbar-h: 60px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-base);
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* Ambient Background Mesh */
+    .ambient-glow {
+      position: fixed;
+      top: -200px;
+      left: 30%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, rgba(6, 8, 14, 0) 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg-base); }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #334155; }
+
+    /* Top Sticky Navigation Bar */
+    .top-navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--topbar-h);
+      background: rgba(6, 8, 14, 0.82);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 1000;
+    }
+
+    .nav-brand-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: var(--sidebar-w);
+    }
+
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #4f46e5, #06b6d4);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 16px var(--primary-glow);
+    }
+
+    .brand-icon svg { width: 17px; height: 17px; fill: #fff; }
+    .brand-title { font-weight: 800; font-size: 1.05rem; letter-spacing: -0.02em; color: #fff; }
+
+    .brand-badge {
+      font-size: 0.65rem;
+      padding: 2px 7px;
+      border-radius: 9999px;
+      background: var(--primary-glow);
+      color: #a5b4fc;
+      border: 1px solid var(--border-accent);
+      font-weight: 700;
+      font-family: var(--font-mono);
+    }
+
+    /* Global Search Box (Ctrl+K) */
+    .search-container {
+      position: relative;
+      flex: 1;
+      max-width: 440px;
+    }
+
+    .search-input-box {
+      width: 100%;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 7px 12px 7px 36px;
+      color: var(--text-main);
+      font-size: 0.82rem;
+      font-family: var(--font-sans);
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .search-input-box:focus {
+      border-color: var(--border-focus);
+      background: var(--bg-elevated);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 11px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 14px;
+      height: 14px;
+      color: var(--text-dim);
+      pointer-events: none;
+    }
+
+    .search-shortcut {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-subtle);
+      padding: 2px 5px;
+      border-radius: 4px;
+      color: var(--text-dim);
+      pointer-events: none;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      color: var(--accent-green);
+      font-weight: 600;
+      padding: 4px 10px;
+      background: var(--accent-green-bg);
+      border: 1px solid var(--accent-green-border);
+      border-radius: 9999px;
+    }
+
+    .status-pulse {
+      width: 6px;
+      height: 6px;
+      background: var(--accent-green);
+      border-radius: 50%;
+      box-shadow: 0 0 6px var(--accent-green);
+      animation: pulse-ring 2s infinite;
+    }
+
+    @keyframes pulse-ring {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      padding: 6px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    /* Layout Tri-Panel Engine */
+    .app-layout {
+      display: flex;
+      margin-top: var(--topbar-h);
+      position: relative;
+    }
+
+    /* Primary Sidebar */
+    .sidebar {
+      width: var(--sidebar-w);
+      position: fixed;
+      top: var(--topbar-h);
+      bottom: 0;
+      left: 0;
+      background: rgba(6, 8, 14, 0.95);
+      border-right: 1px solid var(--border-subtle);
+      padding: 24px 16px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      z-index: 900;
+    }
+
+    .nav-group {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .nav-category {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      padding: 6px 10px;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 7px 10px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.83rem;
+      font-weight: 500;
+      border-radius: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .nav-link:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .nav-link.active {
+      color: #fff;
+      background: var(--primary-glow);
+      font-weight: 600;
+      border-left: 2px solid var(--primary);
+      padding-left: 8px;
+    }
+
+    .method-pill {
+      font-size: 0.62rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      padding: 2px 5px;
+      border-radius: 4px;
+      letter-spacing: 0.03em;
+    }
+
+    .method-post {
+      background: rgba(99, 102, 241, 0.15);
+      color: #818cf8;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+    }
+
+    /* Main Content Area */
+    .main-wrapper {
+      margin-left: var(--sidebar-w);
+      margin-right: var(--toc-w);
+      flex: 1;
+      padding: 48px 56px 120px 56px;
+      min-width: 0;
+      z-index: 10;
+    }
+
+    /* Table of Contents Right Rail */
+    .toc-rail {
+      width: var(--toc-w);
+      position: fixed;
+      top: var(--topbar-h);
+      bottom: 0;
+      right: 0;
+      padding: 32px 20px;
+      overflow-y: auto;
+      border-left: 1px solid var(--border-subtle);
+      background: rgba(6, 8, 14, 0.6);
+      z-index: 100;
+    }
+
+    .toc-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      margin-bottom: 12px;
+    }
+
+    .toc-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .toc-link {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      text-decoration: none;
+      display: block;
+      padding: 4px 0;
+      line-height: 1.4;
+      transition: color 0.15s ease;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .toc-link:hover { color: var(--text-main); }
+    .toc-link.active { color: var(--primary); font-weight: 600; }
+
+    /* Hero Section */
+    .hero-box {
+      margin-bottom: 56px;
+      padding-bottom: 36px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .hero-badge-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.74rem;
+      font-weight: 600;
+      padding: 4px 11px;
+      border-radius: 9999px;
+      background: var(--primary-glow);
+      color: #a5b4fc;
+      border: 1px solid var(--border-accent);
+      margin-bottom: 16px;
+    }
+
+    .hero-title {
+      font-size: 2.4rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.2;
+      margin-bottom: 14px;
+      background: linear-gradient(135deg, #ffffff 40%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 820px;
+    }
+
+    /* 2-Column Split Documentation Grid */
+    .doc-section {
+      margin-bottom: 72px;
+      scroll-margin-top: 80px;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .section-desc {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .split-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      gap: 36px;
+      align-items: start;
+    }
+
+    .full-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .prose-pane {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      min-width: 0;
+    }
+
+    .code-pane {
+      position: sticky;
+      top: 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      min-width: 0;
+    }
+
+    /* Endpoint Interactive Capsule Bar */
+    .endpoint-capsule {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.83rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .capsule-badge {
+      background: var(--primary);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.68rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.05em;
+    }
+
+    .capsule-url {
+      color: #cbd5e1;
+      font-weight: 500;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .btn-copy-action {
+      margin-left: auto;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-family: var(--font-sans);
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .btn-copy-action:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+
+    .btn-copy-action.copied {
+      background: var(--accent-green-bg);
+      color: var(--accent-green);
+      border-color: var(--accent-green-border);
+    }
+
+    /* Parameter Tables */
+    .param-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .param-card-header {
+      padding: 12px 16px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.84rem;
+    }
+
+    th {
+      background: rgba(255, 255, 255, 0.015);
+      color: var(--text-dim);
+      font-weight: 600;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      vertical-align: top;
+      line-height: 1.5;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    .param-field {
+      font-family: var(--font-mono);
+      font-weight: 600;
+      color: #e2e8f0;
+      font-size: 0.82rem;
+    }
+
+    .param-type-badge {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
+
+    .req-badge {
+      display: inline-flex;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: var(--accent-amber-bg);
+      color: #fbbf24;
+      border: 1px solid var(--accent-amber-border);
+    }
+
+    .opt-badge {
+      display: inline-flex;
+      font-size: 0.65rem;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-dim);
+      border: 1px solid var(--border-subtle);
+    }
+
+    /* Terminal Code Panels */
+    .terminal-card {
+      background: var(--bg-code);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+    }
+
+    .terminal-header {
+      background: var(--bg-code-header);
+      padding: 9px 14px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .terminal-title {
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .terminal-tabs {
+      display: flex;
+      gap: 3px;
+    }
+
+    .terminal-tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      padding: 4px 10px;
+      font-size: 0.74rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: all 0.15s ease;
+      font-family: var(--font-sans);
+    }
+
+    .terminal-tab-btn:hover { color: #fff; }
+    .terminal-tab-btn.active { color: #fff; background: rgba(255, 255, 255, 0.08); }
+
+    .terminal-body {
+      padding: 16px;
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 0.79rem;
+      line-height: 1.65;
+      color: #e2e8f0;
+    }
+
+    pre { margin: 0; }
+
+    /* Syntax Colors */
+    .c-key { color: #93c5fd; }
+    .c-str { color: #86efac; }
+    .c-num { color: #fca5a5; }
+    .c-bool { color: #f472b6; }
+    .c-comment { color: #52617a; font-style: italic; }
+    .c-keyword { color: #c084fc; font-weight: 600; }
+    .c-method { color: #38bdf8; }
+
+    /* Callout Alert Boxes */
+    .callout-box {
+      border-radius: 8px;
+      padding: 14px 16px;
+      display: flex;
+      gap: 12px;
+      font-size: 0.84rem;
+      line-height: 1.55;
+    }
+
+    .callout-box svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .callout-info {
+      background: var(--primary-glow);
+      border: 1px solid var(--border-accent);
+      color: #c7d2fe;
+    }
+
+    .callout-info svg { fill: #818cf8; }
+
+    .callout-warning {
+      background: var(--accent-amber-bg);
+      border: 1px solid var(--accent-amber-border);
+      color: #fde68a;
+    }
+
+    .callout-warning svg { fill: #fbbf24; }
+
+    .callout-title {
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 2px;
+      font-size: 0.88rem;
+    }
+
+    /* Structured Step Blocks */
+    .step-unit {
+      display: flex;
+      gap: 14px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      padding: 16px;
+      border-radius: 8px;
+    }
+
+    .step-idx {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.72rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .action-tag {
+      background: var(--primary);
+      color: #fff;
+      font-size: 0.68rem;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      display: inline-block;
+      margin-bottom: 4px;
+    }
+
+    /* Toast Notification */
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #1e1b4b;
+      color: #e0e7ff;
+      border: 1px solid var(--primary);
+      padding: 9px 16px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 9999;
+      pointer-events: none;
+    }
+
+    #toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsive */
+    @media (max-width: 1280px) {
+      .toc-rail { display: none; }
+      .main-wrapper { margin-right: 0; }
+    }
+
+    @media (max-width: 1024px) {
+      .split-grid { grid-template-columns: 1fr; }
+      .code-pane { position: static; }
+    }
+
+    @media (max-width: 768px) {
+      .mobile-menu-btn { display: flex; }
+      .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.25s ease;
+      }
+      .sidebar.open { transform: translateX(0); }
+      .main-wrapper {
+        margin-left: 0;
+        padding: 28px 16px 80px 16px;
+      }
+      .nav-brand-left { width: auto; }
+      .search-container { max-width: 180px; }
+      .search-shortcut { display: none; }
+      .status-indicator span:last-child { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ambient-glow"></div>
+
+  <!-- Global Sticky Topbar -->
+  <header class="top-navbar">
+    <div class="nav-brand-left">
+      <button class="mobile-menu-btn" id="menuToggle" aria-label="Toggle Navigation">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zm0 9l2.5-1.25L12 8.5l-2.5 1.25L12 11zm0 2.5l-5-2.5-5 2.5 10 5 10-5-5-2.5-5 2.5z"/></svg>
+      </div>
+      <span class="brand-title">PipraPay</span>
+      <span class="brand-badge">REST v1</span>
+    </div>
+
+    <!-- Live Filter Search Engine -->
+    <div class="search-container">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="liveSearchInput" class="search-input-box" placeholder="Filter parameters, endpoints, codes..." onkeyup="performSearch()">
+      <span class="search-shortcut">⌘K</span>
+    </div>
+  </header>
+
+  <div class="app-layout">
+
+    <!-- Navigation Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <nav class="nav-group">
+        <div class="nav-category">Getting Started</div>
+        <a href="#overview" class="nav-link active">Overview &amp; Base URL</a>
+        <a href="#authentication" class="nav-link">Authentication</a>
+      </nav>
+
+      <nav class="nav-group">
+        <div class="nav-category">Payment Gateway</div>
+        <a href="#create-order" class="nav-link">
+          <span class="method-pill method-post">POST</span> Create Order &amp; Redirect
+        </a>
+        <a href="#verify-payment" class="nav-link">
+          <span class="method-pill method-post">POST</span> Verify Payment
+        </a>
+        <a href="#refund-payment" class="nav-link">
+          <span class="method-pill method-post">POST</span> Refund Payment
+        </a>
+      </nav>
+
+      <nav class="nav-group">
+        <div class="nav-category">Device &amp; Mobile Sync</div>
+        <a href="#mobile-protocol" class="nav-link">
+          <span class="method-pill method-post">POST</span> Mobile Companion Protocol
+        </a>
+      </nav>
+
+      <nav class="nav-group">
+        <div class="nav-category">Reference &amp; Guides</div>
+        <a href="#webhooks" class="nav-link">Webhooks (IPN)</a>
+        <a href="#code-examples" class="nav-link">Code Examples</a>
+        <a href="#error-codes" class="nav-link">Error Codes</a>
+      </nav>
+    </aside>
+
+    <!-- Main Content Stream -->
+    <main class="main-wrapper">
+
+      <!-- Hero Header -->
+      <section class="hero-box" id="overview">
+        <div class="hero-badge-tag">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
+          RESTful API Specification
+        </div>
+        <h1 class="hero-title">API Orders &amp; Hosted Checkout</h1>
+        <p class="hero-desc">
+          Integrate seamless payment orders, automated checkout redirection, real-time transaction verification, and instant refunds using the PipraPay REST API.
+        </p>
+      </section>
+
+      <!-- 1. Authentication -->
+      <section class="doc-section" id="authentication">
+        <h2 class="section-title">1. Base URL &amp; Authentication</h2>
+        <p class="section-desc">All API requests must be transmitted securely over HTTPS and include your secret API key in the request header.</p>
+
+        <div class="split-grid">
+          <div class="prose-pane">
+            <div class="endpoint-capsule">
+              <span class="capsule-badge">BASE</span>
+              <span class="capsule-url">https://yourdomain.com/api</span>
+              <button class="btn-copy-action" onclick="copySnippet('https://yourdomain.com/api', this)">Copy</button>
+            </div>
+            <p style="font-size: 0.82rem; color: var(--text-dim); margin-top: -8px;">
+              * Replace <code>https://yourdomain.com</code> with your installed PipraPay domain or host URL.
+            </p>
+
+            <div class="callout-box callout-warning">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+              <div>
+                <div class="callout-title">API Key Security Notice</div>
+                <div>Always keep your API key secure. Replace <code>YOUR_API_KEY</code> with your brand's secret token generated from your PipraPay admin dashboard (<b>Brand Settings &gt; API Settings</b>). Never expose it in public or client-side repositories.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="code-pane">
+            <div class="terminal-card">
+              <div class="terminal-header">
+                <span class="terminal-title">Required Request Headers</span>
+                <button class="btn-copy-action" onclick="copySnippet('MHS-PIPRAPAY-API-KEY: YOUR_API_KEY\nContent-Type: application/json', this)">Copy Headers</button>
+              </div>
+              <div class="terminal-body">
+<pre><span class="c-key">MHS-PIPRAPAY-API-KEY</span>: <span class="c-str">YOUR_API_KEY</span>
+<span class="c-key">Content-Type</span>: <span class="c-str">application/json</span></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. Create Payment Order -->
+      <section class="doc-section" id="create-order">
+        <h2 class="section-title">2. Create Payment Order (Gateway Checkout)</h2>
+        <p class="section-desc">Creates a payment transaction order and returns a unique payment identifier (<code>pp_id</code>) and hosted checkout redirect URL (<code>pp_url</code>).</p>
+
+        <div class="split-grid">
+          <div class="prose-pane">
+            <div class="endpoint-capsule">
+              <span class="capsule-badge">POST</span>
+              <span class="capsule-url">https://yourdomain.com/api/checkout/redirect</span>
+              <button class="btn-copy-action" onclick="copySnippet('https://yourdomain.com/api/checkout/redirect', this)">Copy</button>
+            </div>
+
+            <div class="callout-box callout-info" style="margin-top: -6px;">
+              <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+              <div>
+                <div class="callout-title">Required Permission Scope</div>
+                <div>The API key must have the <b>Create Payment</b> (<code>create_payment</code>) permission scope enabled.</div>
+              </div>
+            </div>
+
+            <div class="param-card">
+              <div class="param-card-header">Request Parameters</div>
+              <div class="table-container">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Field</th>
+                      <th>Requirement</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><span class="param-field">full_name</span><span class="param-type-badge">string</span></td>
+                      <td><span class="req-badge">Required</span></td>
+                      <td>Full name of the customer paying for the order.</td>
+                    </tr>
+                    <tr>
+                      <td><span class="param-field">email_address</span><span class="param-type-badge">string</span></td>
+                      <td><span class="req-badge">Required</span></td>
+                      <td>Valid customer email address for transaction receipts and notifications.</td>
+                    </tr>
+                    <tr>
+                      <td><span class="param-field">mobile_number</span><span class="param-type-badge">string</span></td>
+                      <td><span class="req-badge">Required</span></td>
+                      <td>Customer contact phone number.</td>
+                    </tr>
+                    <tr>
+                      <td><span class="param-field">amount</span><span class="param-type-badge">number</span></td>
+                      <td><span class="req-badge">Required</span></td>
+                      <td>The payable amount (must be a positive number).</td>
+                    </tr>
+                    <tr>
+                      <td><span class="param-field">currency</span><span class="param-type-badge">string</span></td>
+                      <td><span class="req-badge">Required</span></td>
+                      <td>Active brand currency code (e.g. <code>BDT</code>, <code>USD</code>, <code>INR</code>).</td>
+                    </tr>
+                    <tr>
+                      <td><span class="param-field">return_url</span><span class="param-type-badge">string</span></td>
+                      <td><span class="opt-badge">Optional</span></td>
+                      <td>Callback URL where customer is redirected after payment. <i>(Domain must be whitelisted in Brand Domains)</i>.</td>
+                    </tr>
+                    <tr>
+                      <td><span class="param-field">webhook_url</span><span class="param-type-badge">string</span></td>
+                      <td><span class="opt-badge">Optional</span></td>
+                      <td>Server endpoint for instant payment notifications (IPN). <i>(Domain must be whitelisted in Brand Domains)</i>.</td>
+                    </tr>
+                    <tr>
+                      <td><span class="param-field">metadata</span><span class="param-type-badge">object</span></td>
+                      <td><span class="opt-badge">Optional</span></td>
+                      <td>Custom key-value parameters (e.g. <code>order_id</code>, <code>customer_id</code>) preserved throughout the transaction lifecycle.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="code-pane">
+            <div class="terminal-card">
+              <div class="terminal-header">
+                <span class="terminal-title">Example Request Body</span>
+                <button class="btn-copy-action" onclick="copySnippet(document.getElementById('create-order-req').innerText, this)">Copy JSON</button>
+              </div>
+              <div class="terminal-body">
+<pre id="create-order-req">{
+  <span class="c-key">"full_name"</span>: <span class="c-str">"John Doe"</span>,
+  <span class="c-key">"email_address"</span>: <span class="c-str">"johndoe@example.com"</span>,
+  <span class="c-key">"mobile_number"</span>: <span class="c-str">"01700000000"</span>,
+  <span class="c-key">"amount"</span>: <span class="c-num">500</span>,
+  <span class="c-key">"currency"</span>: <span class="c-str">"BDT"</span>,
+  <span class="c-key">"return_url"</span>: <span class="c-str">"https://yourdomain.com/payment/callback"</span>,
+  <span class="c-key">"webhook_url"</span>: <span class="c-str">"https://yourdomain.com/payment/webhook"</span>,
+  <span class="c-key">"metadata"</span>: {
+    <span class="c-key">"order_id"</span>: <span class="c-str">"ORD-8921"</span>,
+    <span class="c-key">"customer_id"</span>: <span class="c-str">"CUST-104"</span>
+  }
+}</pre>
+              </div>
+            </div>
+
+            <div class="terminal-card">
+              <div class="terminal-header">
+                <span class="terminal-title">Example Success Response (HTTP 200 OK)</span>
+                <button class="btn-copy-action" onclick="copySnippet(document.getElementById('create-order-res').innerText, this)">Copy JSON</button>
+              </div>
+              <div class="terminal-body">
+<pre id="create-order-res">{
+  <span class="c-key">"pp_id"</span>: <span class="c-str">"9A8B7C6D5E4F3G2H1I0J1K2L3M4"</span>,
+  <span class="c-key">"pp_url"</span>: <span class="c-str">"https://yourdomain.com/payment/9A8B7C6D5E4F3G2H1I0J1K2L3M4"</span>
+}</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Verify Payment Status -->
+      <section class="doc-section" id="verify-payment">
+        <h2 class="section-title">3. Verify Payment Status</h2>
+        <p class="section-desc">Retrieves complete transaction details, gateway status, and verification metadata using the unique <code>pp_id</code> reference.</p>
+
+        <div class="split-grid">
+          <div class="prose-pane">
+            <div class="endpoint-capsule">
+              <span class="capsule-badge">POST</span>
+              <span class="capsule-url">https://yourdomain.com/api/verify-payment</span>
+              <button class="btn-copy-action" onclick="copySnippet('https://yourdomain.com/api/verify-payment', this)">Copy</button>
+            </div>
+
+            <div class="callout-box callout-info" style="margin-top: -6px;">
+              <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+              <div>
+                <div class="callout-title">Required Permission Scope</div>
+                <div>The API key must have the <b>Verify Payment</b> (<code>verify_payment</code>) permission scope enabled.</div>
+              </div>
+            </div>
+
+            <div class="param-card">
+              <div class="param-card-header">Request Body</div>
+              <div class="table-container">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Field</th>
+                      <th>Requirement</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><span class="param-field">pp_id</span><span class="param-type-badge">string</span></td>
+                      <td><span class="req-badge">Required</span></td>
+                      <td>Unique 27-character payment reference identifier returned at order creation.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="code-pane">
+            <div class="terminal-card">
+              <div class="terminal-header">
+                <span class="terminal-title">Example Response Body (HTTP 200 OK)</span>
+                <button class="btn-copy-action" onclick="copySnippet(document.getElementById('verify-res').innerText, this)">Copy JSON</button>
+              </div>
+              <div class="terminal-body">
+<pre id="verify-res">{
+  <span class="c-key">"pp_id"</span>: <span class="c-str">"9A8B7C6D5E4F3G2H1I0J1K2L3M4"</span>,
+  <span class="c-key">"full_name"</span>: <span class="c-str">"John Doe"</span>,
+  <span class="c-key">"email_address"</span>: <span class="c-str">"johndoe@example.com"</span>,
+  <span class="c-key">"mobile_number"</span>: <span class="c-str">"01700000000"</span>,
+  <span class="c-key">"gateway"</span>: <span class="c-str">"bKash"</span>,
+  <span class="c-key">"amount"</span>: <span class="c-str">"500.00"</span>,
+  <span class="c-key">"fee"</span>: <span class="c-str">"0.00"</span>,
+  <span class="c-key">"discount_amount"</span>: <span class="c-str">"0.00"</span>,
+  <span class="c-key">"total"</span>: <span class="c-str">"500.00"</span>,
+  <span class="c-key">"local_net_amount"</span>: <span class="c-str">"500.00"</span>,
+  <span class="c-key">"currency"</span>: <span class="c-str">"BDT"</span>,
+  <span class="c-key">"local_currency"</span>: <span class="c-str">"BDT"</span>,
+  <span class="c-key">"metadata"</span>: {
+    <span class="c-key">"order_id"</span>: <span class="c-str">"ORD-8921"</span>,
+    <span class="c-key">"customer_id"</span>: <span class="c-str">"CUST-104"</span>
+  },
+  <span class="c-key">"sender"</span>: <span class="c-str">"01712345678"</span>,
+  <span class="c-key">"transaction_id"</span>: <span class="c-str">"BKX78942918"</span>,
+  <span class="c-key">"status"</span>: <span class="c-str">"completed"</span>,
+  <span class="c-key">"date"</span>: <span class="c-str">"Sep 30, 2026 03:15 PM"</span>
+}</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. Refund Payment -->
+      <section class="doc-section" id="refund-payment">
+        <h2 class="section-title">4. Refund Payment</h2>
+        <p class="section-desc">Processes a refund for an existing transaction. Only transactions with status <code>completed</code> can be refunded.</p>
+
+        <div class="split-grid">
+          <div class="prose-pane">
+            <div class="endpoint-capsule">
+              <span class="capsule-badge">POST</span>
+              <span class="capsule-url">https://yourdomain.com/api/refund-payment</span>
+              <button class="btn-copy-action" onclick="copySnippet('https://yourdomain.com/api/refund-payment', this)">Copy</button>
+            </div>
+
+            <div class="callout-box callout-info" style="margin-top: -6px;">
+              <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+              <div>
+                <div class="callout-title">Required Permission Scope</div>
+                <div>The API key must have the <b>Refund Payment</b> (<code>refund_payment</code>) permission scope enabled.</div>
+              </div>
+            </div>
+
+            <div class="param-card">
+              <div class="param-card-header">Request Body</div>
+              <div class="table-container">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Field</th>
+                      <th>Requirement</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><span class="param-field">pp_id</span><span class="param-type-badge">string</span></td>
+                      <td><span class="req-badge">Required</span></td>
+                      <td>Unique 27-character payment reference identifier returned at order creation.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="code-pane">
+            <div class="terminal-card">
+              <div class="terminal-header">
+                <span class="terminal-title">Request Body</span>
+                <button class="btn-copy-action" onclick="copySnippet(document.getElementById('refund-req-json').innerText, this)">Copy JSON</button>
+              </div>
+              <div class="terminal-body">
+<pre id="refund-req-json">{
+  <span class="c-key">"pp_id"</span>: <span class="c-str">"9A8B7C6D5E4F3G2H1I0J1K2L3M4"</span>
+}</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. Webhooks -->
+      <section class="doc-section" id="webhooks">
+        <h2 class="section-title">5. Webhooks &amp; Instant Payment Notifications (IPN)</h2>
+        <p class="section-desc">When a payment status changes, PipraPay delivers an asynchronous HTTP POST request to your designated <code>webhook_url</code>.</p>
+
+        <div class="split-grid">
+          <div class="prose-pane">
+            <div class="callout-box callout-warning">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+              <div>
+                <div class="callout-title">Webhook Security Recommendation</div>
+                <div>Always verify the transaction by calling the <code>/api/verify-payment</code> endpoint on your backend before releasing digital goods or fulfilling orders. Respond to webhooks with HTTP <code>200 OK</code>.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="code-pane">
+            <div class="terminal-card">
+              <div class="terminal-header">
+                <span class="terminal-title">Example Webhook Payload</span>
+                <button class="btn-copy-action" onclick="copySnippet(document.getElementById('webhook-res').innerText, this)">Copy JSON</button>
+              </div>
+              <div class="terminal-body">
+<pre id="webhook-res">{
+  <span class="c-key">"event"</span>: <span class="c-str">"payment.completed"</span>,
+  <span class="c-key">"pp_id"</span>: <span class="c-str">"9A8B7C6D5E4F3G2H1I0J1K2L3M4"</span>,
+  <span class="c-key">"status"</span>: <span class="c-str">"completed"</span>,
+  <span class="c-key">"amount"</span>: <span class="c-str">"500.00"</span>,
+  <span class="c-key">"currency"</span>: <span class="c-str">"BDT"</span>,
+  <span class="c-key">"transaction_id"</span>: <span class="c-str">"BKX78942918"</span>,
+  <span class="c-key">"metadata"</span>: {
+    <span class="c-key">"order_id"</span>: <span class="c-str">"ORD-8921"</span>
+  }
+}</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. Mobile Companion Protocol -->
+      <section class="doc-section" id="mobile-protocol">
+        <h2 class="section-title">6. Mobile Companion &amp; Device Communication Protocol</h2>
+        <p class="section-desc">Complete architectural specification for the PipraPay Android Companion App — device pairing handshake, QR payload parsing, session authentication, sender whitelist synchronization, automated SMS ingestion, and error handling.</p>
+
+        <div class="full-grid">
+          <!-- Global Device Endpoint -->
+          <div class="endpoint-capsule">
+            <span class="capsule-badge">POST</span>
+            <span class="capsule-url">https://yourdomain.com/</span>
+            <button class="btn-copy-action" onclick="copySnippet('https://yourdomain.com/', this)">Copy URL</button>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px;">
+            <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); padding: 16px; border-radius: 8px;">
+              <div style="font-weight: 700; color: #818cf8; font-size: 0.85rem; margin-bottom: 6px;">1. HTTP Form Data Transport (<code>$_POST</code>)</div>
+              <div style="font-size: 0.82rem; color: var(--text-dim); line-height: 1.5;">
+                All requests must use <code>Content-Type: application/x-www-form-urlencoded</code> or <code>multipart/form-data</code>. The server routes all actions via the <code>action-companion</code> key.
+              </div>
+            </div>
+            <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); padding: 16px; border-radius: 8px;">
+              <div style="font-weight: 700; color: #10b981; font-size: 0.85rem; margin-bottom: 6px;">2. Nested JSON Serialization (<code>sms_list</code>)</div>
+              <div style="font-size: 0.82rem; color: var(--text-dim); line-height: 1.5;">
+                Top-level parameters are sent as form fields, while complex array structures (e.g. <code>sms_list</code>) are serialized as a <b>JSON string</b> within the POST parameter.
+              </div>
+            </div>
+          </div>
+
+          <!-- Pairing Lifecycle Steps -->
+          <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+            <div class="step-unit">
+              <div class="step-idx">1</div>
+              <div>
+                <div style="font-weight: 700; color: #fff; font-size: 0.88rem;">Admin Generates Pairing QR Code in Web Panel</div>
+                <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 3px;">
+                  In <b>Admin Panel &gt; Devices &gt; Connect Device</b>, a single-use pairing code (OTP) is generated. The QR code embeds:
+                  <div style="margin: 6px 0; font-family: var(--font-mono); color: #fbbf24; background: rgba(0,0,0,0.35); padding: 6px 10px; border-radius: 6px; font-size: 0.8rem; border: 1px solid var(--border-subtle);">
+                    {BASE_URL}----{ONE_TIME_PASSWORD}
+                  </div>
+                  <span style="color: var(--text-dim); font-size: 0.78rem;">Example: <code>https://payments.example.com----W1X2Y3Z4A5B6C7D8E9F0</code></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="step-unit">
+              <div class="step-idx">2</div>
+              <div>
+                <div style="font-weight: 700; color: #fff; font-size: 0.88rem;">App Scans QR &amp; Performs <code>login</code> Handshake</div>
+                <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 3px;">
+                  The app splits the scanned string by <code>----</code> to extract the Base URL and OTP. It then posts device hardware info to the <code>login</code> endpoint. The server consumes the OTP and returns a permanent session <code>token</code>.
+                </div>
+              </div>
+            </div>
+
+            <div class="step-unit">
+              <div class="step-idx">3</div>
+              <div>
+                <div style="font-weight: 700; color: #fff; font-size: 0.88rem;">Continuous Sync &amp; SMS Ingestion</div>
+                <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 3px;">
+                  The app stores the session <code>token</code> locally in encrypted storage. All subsequent requests include this <code>token</code> for authentication.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action 1: Login -->
+          <div style="margin-top: 24px;">
+            <span class="action-tag">ACTION 1</span>
+            <h3 style="color: #fff; font-size: 1.18rem; font-weight: 700; margin-bottom: 4px;">Device Registration &amp; Authentication (<code>login</code>)</h3>
+            <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 18px;">Exchanges a one-time pairing password (OTP) from the QR code for a permanent device session token.</p>
+          </div>
+
+          <div class="split-grid">
+            <div class="prose-pane">
+              <div class="param-card">
+                <div class="param-card-header">POST Parameters</div>
+                <div class="table-container">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Parameter</th>
+                        <th>Requirement</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><span class="param-field">action-companion</span><span class="param-type-badge">string</span></td>
+                        <td><span class="req-badge">Required</span></td>
+                        <td>Must be set to literal <code>login</code>.</td>
+                      </tr>
+                      <tr>
+                        <td><span class="param-field">onetimepassword</span><span class="param-type-badge">string</span></td>
+                        <td><span class="req-badge">Required</span></td>
+                        <td>The OTP code parsed from the QR code (right-hand side of <code>----</code>).</td>
+                      </tr>
+                      <tr>
+                        <td><span class="param-field">name</span><span class="param-type-badge">string</span></td>
+                        <td><span class="opt-badge">Optional</span></td>
+                        <td>Device display nickname (e.g. <code>Samsung Galaxy S22</code>).</td>
+                      </tr>
+                      <tr>
+                        <td><span class="param-field">model</span><span class="param-type-badge">string</span></td>
+                        <td><span class="opt-badge">Optional</span></td>
+                        <td>Hardware model number (e.g. <code>SM-S901B</code>).</td>
+                      </tr>
+                      <tr>
+                        <td><span class="param-field">android_level</span><span class="param-type-badge">string</span></td>
+                        <td><span class="opt-badge">Optional</span></td>
+                        <td>Android API Level (e.g. <code>34</code> for Android 14).</td>
+                      </tr>
+                      <tr>
+                        <td><span class="param-field">app_version</span><span class="param-type-badge">string</span></td>
+                        <td><span class="opt-badge">Optional</span></td>
+                        <td>Companion app build version (e.g. <code>1.2.0</code>).</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="code-pane">
+              <div class="terminal-card">
+                <div class="terminal-header">
+                  <span class="terminal-title">Example POST Form Payload</span>
+                  <button class="btn-copy-action" onclick="copySnippet('action-companion=login&amp;onetimepassword=W1X2Y3Z4A5B6C7D8E9F0&amp;name=Samsung+Galaxy+S22&amp;model=SM-S901B&amp;android_level=34&amp;app_version=1.2.0', this)">Copy Payload</button>
+                </div>
+                <div class="terminal-body">
+<pre>action-companion=login
+onetimepassword=W1X2Y3Z4A5B6C7D8E9F0
+name=Samsung Galaxy S22
+model=SM-S901B
+android_level=34
+app_version=1.2.0</pre>
+                </div>
+              </div>
+
+              <div class="terminal-card">
+                <div class="terminal-header">
+                  <span class="terminal-title">Success Response (HTTP 200 OK)</span>
+                  <button class="btn-copy-action" onclick="copySnippet(document.getElementById('companion-login-res').innerText, this)">Copy JSON</button>
+                </div>
+                <div class="terminal-body">
+<pre id="companion-login-res">{
+  <span class="c-key">"status"</span>: <span class="c-str">"true"</span>,
+  <span class="c-key">"token"</span>: <span class="c-str">"9A8B7C6D5E4F3G2H1I0J1K2L3M4"</span>
+}</pre>
+                </div>
+              </div>
+
+              <div class="terminal-card">
+                <div class="terminal-header">
+                  <span class="terminal-title" style="color: #f87171;">Error Responses</span>
+                </div>
+                <div class="terminal-body">
+<pre><span class="c-comment">// Invalid / expired pairing code</span>
+{
+  <span class="c-key">"status"</span>: <span class="c-str">"false"</span>,
+  <span class="c-key">"title"</span>: <span class="c-str">"Invalid Credentials"</span>,
+  <span class="c-key">"message"</span>: <span class="c-str">"Please enter the correct credentials or scan the QR code again."</span>
+}
+
+<span class="c-comment">// Missing onetimepassword</span>
+{
+  <span class="c-key">"status"</span>: <span class="c-str">"false"</span>,
+  <span class="c-key">"title"</span>: <span class="c-str">"Incomplete Information"</span>,
+  <span class="c-key">"message"</span>: <span class="c-str">"Please fill in all required fields before proceeding."</span>
+}</pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action 2: Transmit Bulk SMS -->
+          <div style="margin-top: 36px;">
+            <span class="action-tag">ACTION 2</span>
+            <h3 style="color: #fff; font-size: 1.18rem; font-weight: 700; margin-bottom: 4px;">Transmit Captured SMS (<code>sms-transmit-bulk</code>)</h3>
+            <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 18px;">Transmits incoming SMS messages captured by the companion app to the server. The server automatically parses MFS provider formats, validates balances, checks SIM slot matching, and reconciles pending checkout orders.</p>
+          </div>
+
+          <div class="split-grid">
+            <div class="prose-pane">
+              <div class="param-card">
+                <div class="param-card-header">Top-level POST Parameters</div>
+                <div class="table-container">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Parameter</th>
+                        <th>Requirement</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><span class="param-field">action-companion</span><span class="param-type-badge">string</span></td>
+                        <td><span class="req-badge">Required</span></td>
+                        <td>Must be set to literal <code>sms-transmit-bulk</code>.</td>
+                      </tr>
+                      <tr>
+                        <td><span class="param-field">token</span><span class="param-type-badge">string</span></td>
+                        <td><span class="req-badge">Required</span></td>
+                        <td>Active session token obtained from <code>login</code>.</td>
+                      </tr>
+                      <tr>
+                        <td><span class="param-field">sms_list</span><span class="param-type-badge">JSON string</span></td>
+                        <td><span class="req-badge">Required</span></td>
+                        <td>Serialized JSON array containing SMS message objects.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="param-card">
+                <div class="param-card-header">Items Inside <code>sms_list</code> Array</div>
+                <div class="table-container">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Property</th>
+                        <th>Requirement</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><span class="param-field">id</span><span class="param-type-badge">string</span></td>
+                        <td><span class="req-badge">Required</span></td>
+                        <td>Local SMS message ID on the Android device (e.g. <code>"1054"</code>).</td>
+                      </tr>
+                      <tr>
+                        <td><span class="param-field">sender</span><span class="param-type-badge">string</span></td>
+                        <td><span class="req-badge">Required</span></td>
+                        <td>Sender header or phone number (e.g. <code>"bKash"</code>, <code>"NAGAD"</code>, <code>"16216"</code>).</td>
+                      </tr>
+                      <tr>
+                        <td><span class="param-field">message</span><span class="param-type-badge">string</span></td>
+                        <td><span class="req-badge">Required</span></td>
+                        <td>Full, raw message body received from carrier.</td>
+                      </tr>
+                      <tr>
+                        <td><span class="param-field">simSlot</span><span class="param-type-badge">string | int</span></td>
+                        <td><span class="req-badge">Required</span></td>
+                        <td>Active SIM card slot index: <code>"1"</code> (Sim1) or <code>"2"</code> (Sim2).</td>
+                      </tr>
+                      <tr>
+                        <td><span class="param-field">timestamp</span><span class="param-type-badge">string</span></td>
+                        <td><span class="req-badge">Required</span></td>
+                        <td>Unix timestamp in milliseconds or seconds (e.g. <code>"1727712000000"</code>).</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="code-pane">
+              <div class="terminal-card">
+                <div class="terminal-header">
+                  <span class="terminal-title">Example <code>sms_list</code> JSON Value</span>
+                  <button class="btn-copy-action" onclick="copySnippet(document.getElementById('sms-list-raw-json').innerText, this)">Copy JSON</button>
+                </div>
+                <div class="terminal-body">
+<pre id="sms-list-raw-json">[
+  {
+    <span class="c-key">"id"</span>: <span class="c-str">"1054"</span>,
+    <span class="c-key">"sender"</span>: <span class="c-str">"bKash"</span>,
+    <span class="c-key">"message"</span>: <span class="c-str">"You have received Tk 500.00 from 01712345678. Fee Tk 0.00. Balance Tk 15,250.00. TrxID BKX78942918 at 30/09/2026 15:15"</span>,
+    <span class="c-key">"simSlot"</span>: <span class="c-str">"1"</span>,
+    <span class="c-key">"timestamp"</span>: <span class="c-str">"1727712000"</span>
+  }
+]</pre>
+                </div>
+              </div>
+
+              <div class="terminal-card">
+                <div class="terminal-header">
+                  <span class="terminal-title">Success Response</span>
+                </div>
+                <div class="terminal-body">
+<pre>{
+  <span class="c-key">"status"</span>: <span class="c-str">"true"</span>,
+  <span class="c-key">"title"</span>: <span class="c-str">"SMS Data Created"</span>,
+  <span class="c-key">"message"</span>: <span class="c-str">"The sms data has been created successfully."</span>
+}</pre>
+                </div>
+              </div>
+
+              <div class="terminal-card">
+                <div class="terminal-header">
+                  <span class="terminal-title" style="color: #f87171;">Validation &amp; Error Responses</span>
+                </div>
+                <div class="terminal-body">
+<pre><span class="c-comment">// Duplicate Transaction ID (Already processed or recorded)</span>
+{
+  <span class="c-key">"status"</span>: <span class="c-str">"false"</span>,
+  <span class="c-key">"title"</span>: <span class="c-str">"Duplicate Transaction"</span>,
+  <span class="c-key">"message"</span>: <span class="c-str">"The provided Transaction ID already exists in our system."</span>
+}
+
+<span class="c-comment">// Unrecognized message template (Code 101 or 102)</span>
+{
+  <span class="c-key">"status"</span>: <span class="c-str">"false"</span>,
+  <span class="c-key">"title"</span>: <span class="c-str">"Invalid or unknown MFS message"</span>,
+  <span class="c-key">"message"</span>: <span class="c-str">"Please fill in all required fields before proceeding."</span>
+}
+
+<span class="c-comment">// Invalid or revoked device session token</span>
+{
+  <span class="c-key">"status"</span>: <span class="c-str">"false"</span>,
+  <span class="c-key">"title"</span>: <span class="c-str">"Authentication Failed"</span>,
+  <span class="c-key">"message"</span>: <span class="c-str">"Please try again or scan the QR code again."</span>
+}</pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action 3: Whitelist Senders -->
+          <div style="margin-top: 36px;">
+            <span class="action-tag">ACTION 3</span>
+            <h3 style="color: #fff; font-size: 1.18rem; font-weight: 700; margin-bottom: 4px;">Fetch Whitelisted Senders (<code>sms-transmit-sender</code>)</h3>
+            <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 18px;">Retrieves the active list of authorized SMS sender header titles configured on the server. The companion app filters incoming messages on the device and only transmits SMS matching these whitelisted headers.</p>
+          </div>
+
+          <div class="split-grid">
+            <div class="prose-pane">
+              <div class="param-card">
+                <div class="param-card-header">POST Parameters</div>
+                <div class="table-container">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Parameter</th>
+                        <th>Requirement</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><span class="param-field">action-companion</span><span class="param-type-badge">string</span></td>
+                        <td><span class="req-badge">Required</span></td>
+                        <td>Must be set to literal <code>sms-transmit-sender</code>.</td>
+                      </tr>
+                      <tr>
+                        <td><span class="param-field">token</span><span class="param-type-badge">string</span></td>
+                        <td><span class="req-badge">Required</span></td>
+                        <td>Active session token.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="code-pane">
+              <div class="terminal-card">
+                <div class="terminal-header">
+                  <span class="terminal-title">Success Response</span>
+                  <button class="btn-copy-action" onclick="copySnippet(document.getElementById('senders-res').innerText, this)">Copy JSON</button>
+                </div>
+                <div class="terminal-body">
+<pre id="senders-res">{
+  <span class="c-key">"status"</span>: <span class="c-str">"true"</span>,
+  <span class="c-key">"senders"</span>: [
+    <span class="c-str">"bKash"</span>,
+    <span class="c-str">"16216"</span>,
+    <span class="c-str">"NAGAD"</span>,
+    <span class="c-str">"UPAY"</span>,
+    <span class="c-str">"Rocket"</span>
+  ]
+}</pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action 4: Account Information -->
+          <div style="margin-top: 36px;">
+            <span class="action-tag">ACTION 4</span>
+            <h3 style="color: #fff; font-size: 1.18rem; font-weight: 700; margin-bottom: 4px;">Device Status &amp; Sync History (<code>account-information</code>)</h3>
+            <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 18px;">Retrieves the admin account owner info and categorized logs of captured SMS records (<code>stored</code>, <code>used</code>, and <code>error</code>) associated with this device.</p>
+          </div>
+
+          <div class="split-grid">
+            <div class="prose-pane">
+              <div class="param-card">
+                <div class="param-card-header">POST Parameters</div>
+                <div class="table-container">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Parameter</th>
+                        <th>Requirement</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><span class="param-field">action-companion</span><span class="param-type-badge">string</span></td>
+                        <td><span class="req-badge">Required</span></td>
+                        <td>Must be set to literal <code>account-information</code>.</td>
+                      </tr>
+                      <tr>
+                        <td><span class="param-field">token</span><span class="param-type-badge">string</span></td>
+                        <td><span class="req-badge">Required</span></td>
+                        <td>Active session token.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="code-pane">
+              <div class="terminal-card">
+                <div class="terminal-header">
+                  <span class="terminal-title">Success Response</span>
+                  <button class="btn-copy-action" onclick="copySnippet(document.getElementById('acc-info-res').innerText, this)">Copy JSON</button>
+                </div>
+                <div class="terminal-body">
+<pre id="acc-info-res">{
+  <span class="c-key">"status"</span>: <span class="c-str">"true"</span>,
+  <span class="c-key">"fullname"</span>: <span class="c-str">"Admin User"</span>,
+  <span class="c-key">"email"</span>: <span class="c-str">"admin@example.com"</span>,
+  <span class="c-key">"stored_count"</span>: <span class="c-num">1</span>,
+  <span class="c-key">"used_count"</span>: <span class="c-num">48</span>,
+  <span class="c-key">"error_count"</span>: <span class="c-num">0</span>,
+  <span class="c-key">"stored"</span>: [
+    {
+      <span class="c-key">"id"</span>: <span class="c-str">"281"</span>,
+      <span class="c-key">"sender"</span>: <span class="c-str">"bKash"</span>,
+      <span class="c-key">"message"</span>: <span class="c-str">"You have received Tk 500.00 from 017XXXXXXXX..."</span>,
+      <span class="c-key">"reason"</span>: <span class="c-str">"--"</span>,
+      <span class="c-key">"simslot"</span>: <span class="c-str">"1"</span>,
+      <span class="c-key">"timestamp"</span>: <span class="c-str">"Sep 30, 2026 03:15 PM"</span>,
+      <span class="c-key">"status"</span>: <span class="c-str">"stored"</span>
+    }
+  ],
+  <span class="c-key">"used"</span>: [],
+  <span class="c-key">"error"</span>: []
+}</pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action 5: Delete SMS Data -->
+          <div style="margin-top: 36px;">
+            <span class="action-tag">ACTION 5</span>
+            <h3 style="color: #fff; font-size: 1.18rem; font-weight: 700; margin-bottom: 4px;">Prune / Delete Stored SMS Logs (<code>delete-sms-data</code>)</h3>
+            <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 18px;">Clears historical SMS records for this device on the server based on category flags.</p>
+          </div>
+
+          <div class="split-grid">
+            <div class="prose-pane">
+              <div class="param-card">
+                <div class="param-card-header">POST Parameters</div>
+                <div class="table-container">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Parameter</th>
+                        <th>Requirement</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><span class="param-field">action-companion</span><span class="param-type-badge">string</span></td>
+                        <td><span class="req-badge">Required</span></td>
+                        <td>Must be set to literal <code>delete-sms-data</code>.</td>
+                      </tr>
+                      <tr>
+                        <td><span class="param-field">token</span><span class="param-type-badge">string</span></td>
+                        <td><span class="req-badge">Required</span></td>
+                        <td>Active session token.</td>
+                      </tr>
+                      <tr>
+                        <td><span class="param-field">stored</span><span class="param-type-badge">string</span></td>
+                        <td><span class="opt-badge">Optional</span></td>
+                        <td>Pass <code>yes</code> to delete approved / awaiting review records.</td>
+                      </tr>
+                      <tr>
+                        <td><span class="param-field">used</span><span class="param-type-badge">string</span></td>
+                        <td><span class="opt-badge">Optional</span></td>
+                        <td>Pass <code>yes</code> to delete matched and completed transaction records.</td>
+                      </tr>
+                      <tr>
+                        <td><span class="param-field">error</span><span class="param-type-badge">string</span></td>
+                        <td><span class="opt-badge">Optional</span></td>
+                        <td>Pass <code>yes</code> to delete rejected / parse-error records.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="code-pane">
+              <div class="terminal-card">
+                <div class="terminal-header">
+                  <span class="terminal-title">Success Response</span>
+                </div>
+                <div class="terminal-body">
+<pre>{
+  <span class="c-key">"status"</span>: <span class="c-str">"true"</span>,
+  <span class="c-key">"title"</span>: <span class="c-str">"Deletion Successful"</span>,
+  <span class="c-key">"message"</span>: <span class="c-str">"The selected data has been deleted successfully."</span>
+}</pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Kotlin Sync Implementation -->
+          <div style="margin-top: 36px;">
+            <h3 style="color: #fff; font-size: 1.18rem; font-weight: 700; margin-bottom: 4px;">Mobile Client Code Implementation</h3>
+            <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 18px;">Sample production implementation in Android (Kotlin with OkHttp) and Flutter (Dart).</p>
+          </div>
+
+          <div class="terminal-card">
+            <div class="terminal-header">
+              <span class="terminal-title">Android (Kotlin &amp; OkHttp) Full Sync Handler</span>
+              <button class="btn-copy-action" onclick="copySnippet(document.getElementById('kotlin-mobile-sync').innerText, this)">Copy Code</button>
+            </div>
+            <div class="terminal-body">
+<pre id="kotlin-mobile-sync"><span class="c-keyword">import</span> okhttp3.*
+<span class="c-keyword">import</span> org.json.JSONArray
+<span class="c-keyword">import</span> org.json.JSONObject
+
+<span class="c-keyword">class</span> <span class="c-method">PipraPaySyncService</span>(
+    <span class="c-keyword">private val</span> baseUrl: String,
+    <span class="c-keyword">private val</span> client: OkHttpClient = OkHttpClient()
+) {
+
+    <span class="c-comment">// 1. Login with OTP scanned from QR code ({baseUrl}----{otp})</span>
+    <span class="c-keyword">fun</span> <span class="c-method">authenticateDevice</span>(otp: String, onResult: (String?) -&gt; Unit) {
+        <span class="c-keyword">val</span> formBody = FormBody.Builder()
+            .add(<span class="c-str">"action-companion"</span>, <span class="c-str">"login"</span>)
+            .add(<span class="c-str">"onetimepassword"</span>, otp)
+            .add(<span class="c-str">"name"</span>, android.os.Build.MODEL)
+            .add(<span class="c-str">"model"</span>, android.os.Build.DEVICE)
+            .add(<span class="c-str">"android_level"</span>, android.os.Build.VERSION.SDK_INT.toString())
+            .add(<span class="c-str">"app_version"</span>, <span class="c-str">"1.0.0"</span>)
+            .build()
+
+        <span class="c-keyword">val</span> request = Request.Builder()
+            .url(baseUrl)
+            .post(formBody)
+            .build()
+
+        client.newCall(request).enqueue(<span class="c-keyword">object</span> : Callback {
+            <span class="c-keyword">override fun</span> <span class="c-method">onResponse</span>(call: Call, response: Response) {
+                <span class="c-keyword">val</span> json = JSONObject(response.body?.string() ?: <span class="c-str">"{}"</span>)
+                <span class="c-keyword">if</span> (json.optString(<span class="c-str">"status"</span>) == <span class="c-str">"true"</span>) {
+                    onResult(json.optString(<span class="c-str">"token"</span>)) <span class="c-comment">// Save token in EncryptedSharedPreferences</span>
+                } <span class="c-keyword">else</span> {
+                    onResult(<span class="c-keyword">null</span>)
+                }
+            }
+            <span class="c-keyword">override fun</span> <span class="c-method">onFailure</span>(call: Call, e: java.io.IOException) = onResult(<span class="c-keyword">null</span>)
+        })
+    }
+
+    <span class="c-comment">// 2. Push Intercepted SMS to Server</span>
+    <span class="c-keyword">fun</span> <span class="c-method">transmitSmsBulk</span>(token: String, smsListJsonArray: JSONArray, onComplete: (Boolean) -&gt; Unit) {
+        <span class="c-keyword">val</span> formBody = FormBody.Builder()
+            .add(<span class="c-str">"action-companion"</span>, <span class="c-str">"sms-transmit-bulk"</span>)
+            .add(<span class="c-str">"token"</span>, token)
+            .add(<span class="c-str">"sms_list"</span>, smsListJsonArray.toString()) <span class="c-comment">// Nested JSON String</span>
+            .build()
+
+        <span class="c-keyword">val</span> request = Request.Builder()
+            .url(baseUrl)
+            .post(formBody)
+            .build()
+
+        client.newCall(request).enqueue(<span class="c-keyword">object</span> : Callback {
+            <span class="c-keyword">override fun</span> <span class="c-method">onResponse</span>(call: Call, response: Response) {
+                <span class="c-keyword">val</span> json = JSONObject(response.body?.string() ?: <span class="c-str">"{}"</span>)
+                onComplete(json.optString(<span class="c-str">"status"</span>) == <span class="c-str">"true"</span>)
+            }
+            <span class="c-keyword">override fun</span> <span class="c-method">onFailure</span>(call: Call, e: java.io.IOException) = onComplete(<span class="c-keyword">false</span>)
+        })
+    }
+}</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. Code Examples -->
+      <section class="doc-section" id="code-examples">
+        <h2 class="section-title">7. Code Integration Examples</h2>
+        <p class="section-desc">Production-ready sample code snippets in multiple programming languages.</p>
+
+        <div class="terminal-card">
+          <div class="terminal-header">
+            <div class="terminal-tabs">
+              <button class="terminal-tab-btn active" onclick="switchLanguageTab(event, 'tab-curl')">cURL</button>
+              <button class="terminal-tab-btn" onclick="switchLanguageTab(event, 'tab-php')">PHP</button>
+              <button class="terminal-tab-btn" onclick="switchLanguageTab(event, 'tab-node')">Node.js</button>
+              <button class="terminal-tab-btn" onclick="switchLanguageTab(event, 'tab-python')">Python</button>
+              <button class="terminal-tab-btn" onclick="switchLanguageTab(event, 'tab-html')">HTML &amp; JS</button>
+            </div>
+            <button class="btn-copy-action" onclick="copyCurrentLanguageSnippet(this)">Copy Snippet</button>
+          </div>
+
+          <!-- cURL Tab -->
+          <div id="tab-curl" class="tab-pane">
+            <div class="terminal-body">
+<pre><span class="c-comment"># Create Payment Order</span>
+curl -X POST https://yourdomain.com/api/checkout/redirect \
+  -H <span class="c-str">"MHS-PIPRAPAY-API-KEY: YOUR_API_KEY"</span> \
+  -H <span class="c-str">"Content-Type: application/json"</span> \
+  -d <span class="c-str">'{
+    "full_name": "John Doe",
+    "email_address": "johndoe@example.com",
+    "mobile_number": "01700000000",
+    "amount": 500,
+    "currency": "BDT",
+    "return_url": "https://yourdomain.com/payment/callback",
+    "webhook_url": "https://yourdomain.com/payment/webhook",
+    "metadata": {
+      "order_id": "ORD-1234"
+    }
+  }'</span></pre>
+            </div>
+          </div>
+
+          <!-- PHP Tab -->
+          <div id="tab-php" class="tab-pane" style="display: none;">
+            <div class="terminal-body">
+<pre><span class="c-keyword">&lt;?php</span>
+<span class="c-keyword">$apiKey</span>   = <span class="c-str">"YOUR_API_KEY"</span>;
+<span class="c-keyword">$endpoint</span> = <span class="c-str">"https://yourdomain.com/api/checkout/redirect"</span>;
+
+<span class="c-keyword">$payload</span> = [
+    <span class="c-str">"full_name"</span>     =&gt; <span class="c-str">"John Doe"</span>,
+    <span class="c-str">"email_address"</span> =&gt; <span class="c-str">"johndoe@example.com"</span>,
+    <span class="c-str">"mobile_number"</span> =&gt; <span class="c-str">"01700000000"</span>,
+    <span class="c-str">"amount"</span>        =&gt; <span class="c-num">500</span>,
+    <span class="c-str">"currency"</span>      =&gt; <span class="c-str">"BDT"</span>,
+    <span class="c-str">"return_url"</span>    =&gt; <span class="c-str">"https://yourdomain.com/payment/callback"</span>,
+    <span class="c-str">"webhook_url"</span>   =&gt; <span class="c-str">"https://yourdomain.com/payment/webhook"</span>,
+    <span class="c-str">"metadata"</span>      =&gt; [ <span class="c-str">"order_id"</span> =&gt; <span class="c-str">"ORD-1234"</span> ]
+];
+
+<span class="c-keyword">$ch</span> = <span class="c-method">curl_init</span>(<span class="c-keyword">$endpoint</span>);
+<span class="c-method">curl_setopt</span>(<span class="c-keyword">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="c-bool">true</span>);
+<span class="c-method">curl_setopt</span>(<span class="c-keyword">$ch</span>, CURLOPT_POST, <span class="c-bool">true</span>);
+<span class="c-method">curl_setopt</span>(<span class="c-keyword">$ch</span>, CURLOPT_POSTFIELDS, <span class="c-method">json_encode</span>(<span class="c-keyword">$payload</span>));
+<span class="c-method">curl_setopt</span>(<span class="c-keyword">$ch</span>, CURLOPT_HTTPHEADER, [
+    <span class="c-str">"MHS-PIPRAPAY-API-KEY: "</span> . <span class="c-keyword">$apiKey</span>,
+    <span class="c-str">"Content-Type: application/json"</span>
+]);
+
+<span class="c-keyword">$response</span> = <span class="c-method">curl_exec</span>(<span class="c-keyword">$ch</span>);
+<span class="c-method">curl_close</span>(<span class="c-keyword">$ch</span>);
+
+<span class="c-keyword">$data</span> = <span class="c-method">json_decode</span>(<span class="c-keyword">$response</span>, <span class="c-bool">true</span>);
+
+<span class="c-keyword">if</span> (!<span class="c-method">empty</span>(<span class="c-keyword">$data</span>[<span class="c-str">'pp_url'</span>])) {
+    <span class="c-comment">// Redirect customer to checkout URL</span>
+    <span class="c-method">header</span>(<span class="c-str">"Location: "</span> . <span class="c-keyword">$data</span>[<span class="c-str">'pp_url'</span>]);
+    <span class="c-keyword">exit</span>;
+} <span class="c-keyword">else</span> {
+    <span class="c-keyword">echo</span> <span class="c-str">"Error: "</span> . (<span class="c-keyword">$data</span>[<span class="c-str">'error'</span>][<span class="c-str">'message'</span>] ?? <span class="c-str">'Failed to initialize payment'</span>);
+}</pre>
+            </div>
+          </div>
+
+          <!-- Node.js Tab -->
+          <div id="tab-node" class="tab-pane" style="display: none;">
+            <div class="terminal-body">
+<pre><span class="c-keyword">const</span> axios = <span class="c-method">require</span>(<span class="c-str">'axios'</span>);
+
+<span class="c-keyword">async function</span> <span class="c-method">createPaymentOrder</span>() {
+  <span class="c-keyword">const</span> apiKey = <span class="c-str">'YOUR_API_KEY'</span>;
+  <span class="c-keyword">const</span> endpoint = <span class="c-str">'https://yourdomain.com/api/checkout/redirect'</span>;
+
+  <span class="c-keyword">const</span> payload = {
+    full_name: <span class="c-str">'John Doe'</span>,
+    email_address: <span class="c-str">'johndoe@example.com'</span>,
+    mobile_number: <span class="c-str">'01700000000'</span>,
+    amount: <span class="c-num">500</span>,
+    currency: <span class="c-str">'BDT'</span>,
+    return_url: <span class="c-str">'https://yourdomain.com/payment/callback'</span>,
+    webhook_url: <span class="c-str">'https://yourdomain.com/payment/webhook'</span>,
+    metadata: { order_id: <span class="c-str">'ORD-1234'</span> }
+  };
+
+  <span class="c-keyword">try</span> {
+    <span class="c-keyword">const</span> response = <span class="c-keyword">await</span> axios.<span class="c-method">post</span>(endpoint, payload, {
+      headers: {
+        <span class="c-str">'MHS-PIPRAPAY-API-KEY'</span>: apiKey,
+        <span class="c-str">'Content-Type'</span>: <span class="c-str">'application/json'</span>
+      }
+    });
+
+    console.<span class="c-method">log</span>(<span class="c-str">'Payment ID:'</span>, response.data.pp_id);
+    console.<span class="c-method">log</span>(<span class="c-str">'Redirect URL:'</span>, response.data.pp_url);
+    <span class="c-comment">// Redirect client: res.redirect(response.data.pp_url);</span>
+  } <span class="c-keyword">catch</span> (err) {
+    console.<span class="c-method">error</span>(<span class="c-str">'Payment Error:'</span>, err.response?.data || err.message);
+  }
+}
+
+<span class="c-method">createPaymentOrder</span>();</pre>
+            </div>
+          </div>
+
+          <!-- Python Tab -->
+          <div id="tab-python" class="tab-pane" style="display: none;">
+            <div class="terminal-body">
+<pre><span class="c-keyword">import</span> requests
+
+api_key = <span class="c-str">"YOUR_API_KEY"</span>
+endpoint = <span class="c-str">"https://yourdomain.com/api/checkout/redirect"</span>
+
+headers = {
+    <span class="c-str">"MHS-PIPRAPAY-API-KEY"</span>: api_key,
+    <span class="c-str">"Content-Type"</span>: <span class="c-str">"application/json"</span>
+}
+
+payload = {
+    <span class="c-str">"full_name"</span>: <span class="c-str">"John Doe"</span>,
+    <span class="c-str">"email_address"</span>: <span class="c-str">"johndoe@example.com"</span>,
+    <span class="c-str">"mobile_number"</span>: <span class="c-str">"01700000000"</span>,
+    <span class="c-str">"amount"</span>: <span class="c-num">500</span>,
+    <span class="c-str">"currency"</span>: <span class="c-str">"BDT"</span>,
+    <span class="c-str">"return_url"</span>: <span class="c-str">"https://yourdomain.com/payment/callback"</span>,
+    <span class="c-str">"webhook_url"</span>: <span class="c-str">"https://yourdomain.com/payment/webhook"</span>,
+    <span class="c-str">"metadata"</span>: { <span class="c-str">"order_id"</span>: <span class="c-str">"ORD-1234"</span> }
+}
+
+response = requests.<span class="c-method">post</span>(endpoint, json=payload, headers=headers)
+result = response.<span class="c-method">json</span>()
+
+<span class="c-keyword">if</span> response.status_code == <span class="c-num">200</span>:
+    print(<span class="c-str">"Payment ID:"</span>, result.get(<span class="c-str">"pp_id"</span>))
+    print(<span class="c-str">"Checkout URL:"</span>, result.get(<span class="c-str">"pp_url"</span>))
+<span class="c-keyword">else</span>:
+    print(<span class="c-str">"Error:"</span>, result.get(<span class="c-str">"error"</span>, {}).get(<span class="c-str">"message"</span>))</pre>
+            </div>
+          </div>
+
+          <!-- HTML & JS Tab -->
+          <div id="tab-html" class="tab-pane" style="display: none;">
+            <div class="terminal-body">
+<pre><span class="c-comment">&lt;!-- Client-side Integration Trigger --&gt;</span>
+<span class="c-keyword">&lt;button</span> <span class="c-key">id</span>=<span class="c-str">"payBtn"</span><span class="c-keyword">&gt;</span>Pay 500 BDT Now<span class="c-keyword">&lt;/button&gt;</span>
+
+<span class="c-keyword">&lt;script&gt;</span>
+<span class="c-keyword">document</span>.<span class="c-method">getElementById</span>(<span class="c-str">'payBtn'</span>).<span class="c-method">addEventListener</span>(<span class="c-str">'click'</span>, <span class="c-keyword">async</span> () =&gt; {
+  <span class="c-keyword">const</span> payload = {
+    full_name: <span class="c-str">"John Doe"</span>,
+    email_address: <span class="c-str">"johndoe@example.com"</span>,
+    mobile_number: <span class="c-str">"01700000000"</span>,
+    amount: <span class="c-num">500</span>,
+    currency: <span class="c-str">"BDT"</span>,
+    return_url: <span class="c-str">"https://yourdomain.com/payment/callback"</span>,
+    metadata: { order_id: <span class="c-str">"ORD-1234"</span> }
+  };
+
+  <span class="c-keyword">try</span> {
+    <span class="c-keyword">const</span> res = <span class="c-keyword">await</span> <span class="c-method">fetch</span>(<span class="c-str">'https://yourdomain.com/api/checkout/redirect'</span>, {
+      method: <span class="c-str">'POST'</span>,
+      headers: {
+        <span class="c-str">'MHS-PIPRAPAY-API-KEY'</span>: <span class="c-str">'YOUR_API_KEY'</span>,
+        <span class="c-str">'Content-Type'</span>: <span class="c-str">'application/json'</span>
+      },
+      body: JSON.<span class="c-method">stringify</span>(payload)
+    });
+
+    <span class="c-keyword">const</span> data = <span class="c-keyword">await</span> res.<span class="c-method">json</span>();
+    <span class="c-keyword">if</span> (data.<span class="c-key">pp_url</span>) {
+      window.location.<span class="c-key">href</span> = data.<span class="c-key">pp_url</span>; <span class="c-comment">// Redirect customer to hosted checkout</span>
+    } <span class="c-keyword">else</span> {
+      alert(<span class="c-str">'Payment Error: '</span> + (data.<span class="c-key">message</span> || <span class="c-str">'Failed to initialize payment'</span>));
+    }
+  } <span class="c-keyword">catch</span> (err) {
+    console.<span class="c-method">error</span>(<span class="c-str">'Request error:'</span>, err);
+  }
+});
+<span class="c-keyword">&lt;/script&gt;</span></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. Error Codes -->
+      <section class="doc-section" id="error-codes">
+        <h2 class="section-title">8. Error Codes &amp; Handling</h2>
+        <p class="section-desc">When an error occurs, the API returns HTTP <code>400 Bad Request</code> with a structured JSON error object.</p>
+
+        <div class="param-card">
+          <div class="param-card-header">API Error Dictionary</div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Error Code</th>
+                  <th>Reason &amp; Troubleshooting</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="param-field" style="color: #f87171;">INVALID_API_KEY</span></td>
+                  <td>API key is missing, invalid, or expired. Verify key in <b>Brand Settings &gt; API Settings</b>.</td>
+                </tr>
+                <tr>
+                  <td><span class="param-field" style="color: #f87171;">INSUFFICIENT_SCOPE</span></td>
+                  <td>The API key lacks the required permission scope (e.g. <code>Create Payment</code>, <code>Verify Payment</code>, or <code>Refund Payment</code>).</td>
+                </tr>
+                <tr>
+                  <td><span class="param-field" style="color: #f87171;">MISSING_FIELD</span></td>
+                  <td>A mandatory parameter (such as <code>full_name</code>, <code>email_address</code>, or <code>mobile_number</code>) is missing.</td>
+                </tr>
+                <tr>
+                  <td><span class="param-field" style="color: #f87171;">INVALID_AMOUNT</span></td>
+                  <td>Amount is non-numeric, zero, or negative.</td>
+                </tr>
+                <tr>
+                  <td><span class="param-field" style="color: #f87171;">INVALID_CURRENCY</span></td>
+                  <td>Specified currency is not configured or activated for your brand.</td>
+                </tr>
+                <tr>
+                  <td><span class="param-field" style="color: #f87171;">INVALID_URL</span></td>
+                  <td>The domain in <code>return_url</code> or <code>webhook_url</code> is not added or is inactive in your whitelisted Brand Domains.</td>
+                </tr>
+                <tr>
+                  <td><span class="param-field" style="color: #f87171;">INVALID_PP_ID</span></td>
+                  <td>The transaction reference <code>pp_id</code> could not be found.</td>
+                </tr>
+                <tr>
+                  <td><span class="param-field" style="color: #f87171;">INVALID_STATUS</span></td>
+                  <td>Action disallowed for the current payment status (e.g., refund attempted on a non-completed payment).</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- On This Page (Right Sticky TOC Rail) -->
+    <aside class="toc-rail">
+      <div class="toc-title">On This Page</div>
+      <ul class="toc-list">
+        <li><a href="#overview" class="toc-link">Overview &amp; Base URL</a></li>
+        <li><a href="#authentication" class="toc-link">Authentication</a></li>
+        <li><a href="#create-order" class="toc-link">Create Payment Order</a></li>
+        <li><a href="#verify-payment" class="toc-link">Verify Payment Status</a></li>
+        <li><a href="#refund-payment" class="toc-link">Refund Payment</a></li>
+        <li><a href="#webhooks" class="toc-link">Webhooks &amp; IPN</a></li>
+        <li><a href="#mobile-protocol" class="toc-link">Companion App Protocol</a></li>
+        <li><a href="#code-examples" class="toc-link">Code Examples</a></li>
+        <li><a href="#error-codes" class="toc-link">Error Codes</a></li>
+      </ul>
+    </aside>
+
+  </div>
+
+  <div id="toast">Copied to clipboard!</div>
+
+  <script>
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.innerText = msg || 'Copied to clipboard!';
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2000);
+    }
+
+    function copySnippet(text, btnElement) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('Copied to clipboard!');
+        if (btnElement) {
+          const originalText = btnElement.innerText;
+          btnElement.innerText = 'Copied!';
+          btnElement.classList.add('copied');
+          setTimeout(() => {
+            btnElement.innerText = originalText;
+            btnElement.classList.remove('copied');
+          }, 1500);
+        }
+      });
+    }
+
+    function switchLanguageTab(evt, tabId) {
+      const container = evt.currentTarget.closest('.terminal-card');
+      container.querySelectorAll('.tab-pane').forEach(p => p.style.display = 'none');
+      container.querySelectorAll('.terminal-tab-btn').forEach(b => b.classList.remove('active'));
+
+      container.querySelector('#' + tabId).style.display = 'block';
+      evt.currentTarget.classList.add('active');
+    }
+
+    function copyCurrentLanguageSnippet(btn) {
+      const card = btn.closest('.terminal-card');
+      const activePane = card.querySelector('.tab-pane[style*="block"], .tab-pane:not([style*="none"])');
+      if (activePane) {
+        const code = activePane.querySelector('pre').innerText;
+        copySnippet(code, btn);
+      }
+    }
+
+    // Interactive Search (Instant filter across parameters, endpoints, codes)
+    function performSearch() {
+      const query = document.getElementById('liveSearchInput').value.toLowerCase().trim();
+      const sections = document.querySelectorAll('.doc-section');
+
+      sections.forEach(sec => {
+        if (!query) {
+          sec.style.display = '';
+          return;
+        }
+        const text = sec.innerText.toLowerCase();
+        sec.style.display = text.includes(query) ? '' : 'none';
+      });
+    }
+
+    // Keyboard Shortcut (Cmd+K / Ctrl+K)
+    window.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        const input = document.getElementById('liveSearchInput');
+        input.focus();
+        input.select();
+      }
+    });
+
+    // Mobile Sidebar Toggle
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    if (menuToggle && sidebar) {
+      menuToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+      });
+
+      document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+          if (window.innerWidth <= 768) {
+            sidebar.classList.remove('open');
+          }
+        });
+      });
+    }
+
+    // ScrollSpy Synchronization for Left Sidebar & Right TOC
+    window.addEventListener('scroll', () => {
+      const sections = document.querySelectorAll('section.doc-section, section.hero-box');
+      const navLinks = document.querySelectorAll('.sidebar .nav-link');
+      const tocLinks = document.querySelectorAll('.toc-rail .toc-link');
+      let currentSectionId = '';
+
+      sections.forEach(section => {
+        const top = section.offsetTop - 140;
+        if (window.pageYOffset >= top) {
+          currentSectionId = section.getAttribute('id');
+        }
+      });
+
+      if (currentSectionId) {
+        navLinks.forEach(l => {
+          l.classList.remove('active');
+          if (l.getAttribute('href') === '#' + currentSectionId) l.classList.add('active');
+        });
+
+        tocLinks.forEach(l => {
+          l.classList.remove('active');
+          if (l.getAttribute('href') === '#' + currentSectionId) l.classList.add('active');
+        });
+      }
+    });
+  </script>
+</body>
+</html>

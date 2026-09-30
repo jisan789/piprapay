@@ -1,0 +1,17 @@
+# Environment and generated config
+pp-config.php
+.env
+.env.*
+
+# Logs and databases
+*.log
+*.sqlite
+*.sql
+
+# System and IDE files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
