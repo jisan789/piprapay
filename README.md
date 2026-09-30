@@ -94,13 +94,13 @@ PipraPay automates verification across direct seller accounts and standard merch
 
 | Channel Badge | Supported Account Types | Verification Workflow | Automation Mode |
 | :--- | :--- | :--- | :---: |
-| ![bKash](https://img.shields.io/badge/bKash-Personal_|_Merchant_|_Agent-E2136E?style=flat-square&logo=bKash&logoColor=white) | Personal, Merchant, Agent | Direct to Seller + Automated SMS Matching / Merchant API | ![Auto](https://img.shields.io/badge/Auto-SMS-10b981?style=flat-square) |
-| ![Nagad](https://img.shields.io/badge/Nagad-Personal_|_Merchant_|_Agent-F7941E?style=flat-square&logo=nagad&logoColor=white) | Personal, Merchant, Agent | Direct to Seller + Automated SMS Matching / Merchant API | ![Auto](https://img.shields.io/badge/Auto-SMS-10b981?style=flat-square) |
-| ![Rocket](https://img.shields.io/badge/Rocket-Personal_|_Merchant_|_Agent-8C3494?style=flat-square&logoColor=white) | Personal, Merchant, Agent | Direct to Seller + Automated SMS Matching | ![Auto](https://img.shields.io/badge/Auto-SMS-10b981?style=flat-square) |
-| ![Upay](https://img.shields.io/badge/Upay-Personal_|_Merchant_|_Agent-0066B3?style=flat-square&logoColor=white) | Personal, Merchant, Agent | Direct to Seller + Automated SMS Matching | ![Auto](https://img.shields.io/badge/Auto-SMS-10b981?style=flat-square) |
-| ![Cellfin](https://img.shields.io/badge/Cellfin-IBBL_Account_|_Card-1E824C?style=flat-square&logoColor=white) | Personal, Virtual Card | Direct to Seller + Instant Reconciliation | ![Instant](https://img.shields.io/badge/Auto-Direct-06b6d4?style=flat-square) |
-| ![OK Wallet](https://img.shields.io/badge/OK_Wallet-Personal_|_Merchant-E31B23?style=flat-square&logoColor=white) | Personal, Merchant, Agent | Direct to Seller + Automated SMS Matching | ![Auto](https://img.shields.io/badge/Auto-SMS-10b981?style=flat-square) |
-| ![Tap](https://img.shields.io/badge/Tap_/_TeleCash-Personal_|_Agent-F37021?style=flat-square&logoColor=white) | Personal, Merchant, Agent | Direct to Seller + Automated SMS Matching | ![Auto](https://img.shields.io/badge/Auto-SMS-10b981?style=flat-square) |
+| ![bKash](https://img.shields.io/badge/bKash-Personal%20%7C%20Merchant%20%7C%20Agent-E2136E?style=flat-square&logoColor=white) | Personal, Merchant, Agent | Customer transfers directly to seller &rarr; Companion app reads SMS &rarr; Auto-verifies order | ![Auto-SMS](https://img.shields.io/badge/Auto-SMS_Sync-10b981?style=flat-square) |
+| ![Nagad](https://img.shields.io/badge/Nagad-Personal%20%7C%20Merchant%20%7C%20Agent-F7941E?style=flat-square&logoColor=white) | Personal, Merchant, Agent | Customer transfers directly to seller &rarr; Companion app reads SMS &rarr; Auto-verifies order | ![Auto-SMS](https://img.shields.io/badge/Auto-SMS_Sync-10b981?style=flat-square) |
+| ![Rocket](https://img.shields.io/badge/Rocket-Personal%20%7C%20Merchant%20%7C%20Agent-8C3494?style=flat-square&logoColor=white) | Personal, Merchant, Agent | Direct P2P transfer &rarr; Automated SMS alert capture & TxnID matching | ![Auto-SMS](https://img.shields.io/badge/Auto-SMS_Sync-10b981?style=flat-square) |
+| ![Upay](https://img.shields.io/badge/Upay-Personal%20%7C%20Merchant%20%7C%20Agent-0066B3?style=flat-square&logoColor=white) | Personal, Merchant, Agent | Direct P2P transfer &rarr; Automated SMS alert capture & TxnID matching | ![Auto-SMS](https://img.shields.io/badge/Auto-SMS_Sync-10b981?style=flat-square) |
+| ![Cellfin](https://img.shields.io/badge/Cellfin-Account%20%7C%20Card-1E824C?style=flat-square&logoColor=white) | Personal, Virtual Card | Direct transfer &rarr; Instant transaction reference code validation | ![Instant](https://img.shields.io/badge/Auto-Direct-06b6d4?style=flat-square) |
+| ![OK Wallet](https://img.shields.io/badge/OK_Wallet-Personal%20%7C%20Merchant-E31B23?style=flat-square&logoColor=white) | Personal, Merchant, Agent | Direct P2P transfer &rarr; Automated SMS alert capture & TxnID matching | ![Auto-SMS](https://img.shields.io/badge/Auto-SMS_Sync-10b981?style=flat-square) |
+| ![Tap](https://img.shields.io/badge/Tap%20--%20TeleCash-Personal%20%7C%20Agent-F37021?style=flat-square&logoColor=white) | Personal, Merchant, Agent | Direct P2P transfer &rarr; Automated SMS alert capture & TxnID matching | ![Auto-SMS](https://img.shields.io/badge/Auto-SMS_Sync-10b981?style=flat-square) |
 
 </details>
 
@@ -111,12 +111,12 @@ PipraPay automates verification across direct seller accounts and standard merch
 
 | Connector Badge | Type | Integration Mode | Verification Type |
 | :--- | :--- | :--- | :---: |
-| ![Stripe](https://img.shields.io/badge/Stripe-Credit_/_Debit_Cards-635BFF?style=flat-square&logo=stripe&logoColor=white) | Direct Merchant Account | Instant Webhooks & 3D-Secure Processing | ![Webhook](https://img.shields.io/badge/Mode-Webhook-6366f1?style=flat-square) |
-| ![PayPal](https://img.shields.io/badge/PayPal-Wallet_/_Cards-00457C?style=flat-square&logo=paypal&logoColor=white) | Direct Merchant Account | Instant Payment Notification (IPN) & Callbacks | ![IPN](https://img.shields.io/badge/Mode-IPN-3b82f6?style=flat-square) |
-| ![SSLCommerz](https://img.shields.io/badge/SSLCommerz-Hosted_Gateway-005B94?style=flat-square&logoColor=white) | Direct Merchant Account | Hosted Checkout & IPN Handlers | ![Direct](https://img.shields.io/badge/Mode-Direct-06b6d4?style=flat-square) |
-| ![Shurjopay](https://img.shields.io/badge/Shurjopay-Merchant_API-2ECC71?style=flat-square&logoColor=white) | Direct Merchant Account | Instant Verification API | ![API](https://img.shields.io/badge/Mode-API-8b5cf6?style=flat-square) |
-| ![Crypto](https://img.shields.io/badge/NOWPayments_|_OxaPay-Cryptocurrency-F7931A?style=flat-square&logo=bitcoin&logoColor=white) | Direct Merchant Wallet | Automated Multi-Crypto Confirmations | ![Blockchain](https://img.shields.io/badge/Mode-Crypto-f59e0b?style=flat-square) |
-| ![Wise](https://img.shields.io/badge/Wise_|_Payoneer_|_Payeer-Direct_Transfer-00B9FF?style=flat-square&logo=wise&logoColor=white) | Direct Seller Account | Manual / Automated Transaction Reference Matching | ![Manual/Sync](https://img.shields.io/badge/Mode-Sync-64748b?style=flat-square) |
+| ![Stripe](https://img.shields.io/badge/Stripe-Credit%20%2F%20Debit%20Cards-635BFF?style=flat-square&logo=stripe&logoColor=white) | Direct Merchant Account | Instant Webhooks & 3D-Secure Processing | ![Webhook](https://img.shields.io/badge/Mode-Webhook-6366f1?style=flat-square) |
+| ![PayPal](https://img.shields.io/badge/PayPal-Wallet%20%2F%20Cards-00457C?style=flat-square&logo=paypal&logoColor=white) | Direct Merchant Account | Instant Payment Notification (IPN) & Callbacks | ![IPN](https://img.shields.io/badge/Mode-IPN-3b82f6?style=flat-square) |
+| ![SSLCommerz](https://img.shields.io/badge/SSLCommerz-Hosted%20Gateway-005B94?style=flat-square&logoColor=white) | Direct Merchant Account | Hosted Checkout & IPN Handlers | ![Direct](https://img.shields.io/badge/Mode-Direct-06b6d4?style=flat-square) |
+| ![Shurjopay](https://img.shields.io/badge/Shurjopay-Merchant%20API-2ECC71?style=flat-square&logoColor=white) | Direct Merchant Account | Instant Verification API Callback | ![API](https://img.shields.io/badge/Mode-API-8b5cf6?style=flat-square) |
+| ![Crypto](https://img.shields.io/badge/Crypto-NOWPayments%20%7C%20OxaPay-F7931A?style=flat-square&logo=bitcoin&logoColor=white) | Direct Merchant Wallet | Automated Multi-Crypto On-Chain / API Confirmations | ![Blockchain](https://img.shields.io/badge/Mode-Crypto-f59e0b?style=flat-square) |
+| ![Wise](https://img.shields.io/badge/International-Wise%20%7C%20Payoneer%20%7C%20Payeer-00B9FF?style=flat-square&logo=wise&logoColor=white) | Direct Seller Account | Manual / Automated Transaction Reference Matching | ![Sync](https://img.shields.io/badge/Mode-Sync-64748b?style=flat-square) |
 
 </details>
 
